@@ -6,7 +6,7 @@ from influxdb import DataFrameClient
 import matplotlib.pyplot as plt
 
 BORDER_PADDING = 1
-STEP = 0.1
+STEP = 0.01
 
 client = DataFrameClient(host=sys.argv[1], port=8086, database='sensors')
 data = client.query('SELECT sensor_id, latitude as x, longitude as y, last("temp") as temp FROM weather GROUP BY sensor_id')
@@ -52,3 +52,7 @@ plt.show()
 por_hat = rbfi(df.x, df.y)
 sns.distplot(por_hat - df.temp)
 plt.show()
+
+# Save the image to PNG, print the extent to console
+plt.imsave("colormap.png", di.T, origin="lower", vmin=mi, vmax=ma)
+print([x_min, y_min, x_max, y_max])

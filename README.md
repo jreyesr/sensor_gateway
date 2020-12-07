@@ -16,4 +16,22 @@ See [the gateway readme](gateway/README.md) for more information.
 ## Interpolated map
 
 The [genmap_influx.py](genmap_influx.py) script generates an interpolated map from the latest measurements in the InfluxDB database.
-TODO requirements, installation, usage, results
+The resulting PNG can be used as an overlay to a map.
+
+### Requirements
+The `genmap_influx.py` script uses the requirements on [requirements.txt](requirements.txt).
+
+### Installation
+No installation is required. The `genmap_influx.py` script is expected to be invoked from the Flask server, but it can also be invoked manually.
+
+### Usage
+Call the script as `python genmap_influx.py localhost`. The last argument is the IP or hostname of the InfluxDB server (expected to be localhost).
+
+The database must have a `sensors` database which must contain a `weather` table, which must in turn contain measurements with tags `sensor_id`, `latitude` and `longitude`, and value `temp`.
+
+TODO: Change code to allow the specific column (currently hardcoded to `temp`) to be specified in the command line.
+
+### Results
+The script creates a PNG image in false color. The coordinates of the limits of the PNG image (in the form `min_lng, min_lat, max_lng, max_lat`) are printed to standard output. 
+
+The image is expected to be served by a web server and used, for example, in [the updated WorldMap panel for Grafana](https://github.com/panodata/grafana-map-panel) (see [here](https://github.com/panodata/grafana-map-panel#image-overlay) for instructions).
