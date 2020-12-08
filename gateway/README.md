@@ -27,3 +27,12 @@ The application exposes a very simple API (as in, just a single-endpoint) to sub
     * `sensor_id`: The unique ID of the sensor. Will be internally translated to a (latitude, longitude) tuple using the SENSOR_LOCATIONS dictionary.
     * (optional) `time`: Overrides the automatic timestamping of InfluxDB. If not present, InfluxDB will timestamp the data with the current date and time. Must be provided in RFC3339 format (for example, `2020-11-10T23:01:02-02:00`). 
     * (any extra fields) Will be passed directly to InfluxDB as measurement fields. Don't provide units with the data! (i.e., if measuring 25º C, just send `25`). That allows ordering and parsing. Units should be set on the visualizer (for example, Grafana has a setting to show units on panels).
+
+## Additional functionality
+
+### Map interpolation
+TODO Add docs for calling the interpolation script
+
+### Serving interpolated map
+
+Any files placed on the `static/` folder will be automagically served on `http://<ip>:5000/static/filename.extension`. No further configuration is required. This can be used to display the interpolated maps (generated on the previous section) to a frontend.
