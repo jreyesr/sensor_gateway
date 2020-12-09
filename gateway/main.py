@@ -1,5 +1,7 @@
 from influxdb import InfluxDBClient
 from flask import Flask, request, abort
+import subprocess
+import shutil
 
 DB_NAME = "sensors"
 DB_USERNAME = ""
@@ -54,7 +56,7 @@ client = InfluxDBClient('localhost', 8086, DB_USERNAME, DB_PASSWORD, DB_NAME)
 app = Flask(__name__)
 
 @app.route('/upload', methods=['POST'])
-def hello_world():
+def upload_sensor_meas():
     data = request.json
 
     # ensure sensor is on location map
@@ -84,6 +86,16 @@ def hello_world():
         return ""
     else:
         abort(404) # write failed
+        
+@app.route('/recompute', methods=['POST'])
+def recompute_map():
+    data = request.json
+    metric = data.get("metric", "temp")
+    
+    ans = subprocess.check_output(["python3",  "../genmap_influx.py", "localhost", "quiet"])
+    shutil.move("colormap.png", "static/colormap.png")
+
+    return ""
 
 if __name__ == "__main__":
     app.run(debug=False)

@@ -21,12 +21,15 @@ The InfluxDB database must already exist. The following parameters can be config
 
 ## API
 
-The application exposes a very simple API (as in, just a single-endpoint) to submit sensor data. All data must be submitted as JSON strings in the body of the request.
+The application exposes a very simple API to submit sensor data. All data must be submitted as JSON strings in the body of the request.
 
 * POST `/upload`: Uploads a single sensor reading. Parameters:
     * `sensor_id`: The unique ID of the sensor. Will be internally translated to a (latitude, longitude) tuple using the SENSOR_LOCATIONS dictionary.
     * (optional) `time`: Overrides the automatic timestamping of InfluxDB. If not present, InfluxDB will timestamp the data with the current date and time. Must be provided in RFC3339 format (for example, `2020-11-10T23:01:02-02:00`). 
     * (any extra fields) Will be passed directly to InfluxDB as measurement fields. Don't provide units with the data! (i.e., if measuring 25º C, just send `25`). That allows ordering and parsing. Units should be set on the visualizer (for example, Grafana has a setting to show units on panels).
+
+* POST `/recompute`: Computes an interpolated map from the latest set of reading using [genmap_influx.py](../genmap_influx.py) on the main repo. After it returns, the map will be available on `/static/colormap_<metric>.png` (see below for the meaning of `metric`).
+    * `metric`: Which measurement should be used in computing the map. Defaults to `temp` if not provided.
 
 ## Additional functionality
 
