@@ -25,7 +25,7 @@ The `genmap_influx.py` script uses the requirements on [requirements.txt](requir
 No installation is required. The `genmap_influx.py` script is expected to be invoked from the Flask server, but it can also be invoked manually.
 
 ### Usage
-Call the script as `python genmap_influx.py localhost`. The last argument is the IP or hostname of the InfluxDB server (expected to be localhost).
+Call the script as `python genmap_influx.py localhost noquiet`. The first argument is the IP or hostname of the InfluxDB server (expected to be localhost). The second argument must be either `quiet` or `noquiet`. A value of `quiet` supresses the Matplotlib graphs and therefore allows the script to run without user interaction. `noquiet` is used when running the script directly from console.
 
 The database must have a `sensors` database which must contain a `weather` table, which must in turn contain measurements with tags `sensor_id`, `latitude` and `longitude`, and value `temp`.
 
