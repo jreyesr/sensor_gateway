@@ -93,7 +93,8 @@ def recompute_map():
     metric = data.get("metric", "temp")
     
     ans = subprocess.check_output(["python3",  "../genmap_influx.py", "localhost", "quiet"])
-    shutil.move("colormap.png", "static/colormap.png")
+    print(ans.decode("utf-8").strip().split("\n")[-1])
+    shutil.move("colormap.png", "static/colormap_{}.png".format(metric))
 
     return ""
 
